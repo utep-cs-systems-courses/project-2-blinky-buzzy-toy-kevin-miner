@@ -5,7 +5,7 @@
 #include "libTimer.h"
 
 char state, switch_state_down, switch_state_changed; /* effectively boolean */
-char sw_one, sw_two, sw_thr, sw_fou, CURRENT_STATE;
+char sw_1, sw_2, sw_3, sw_4, CURRENT_STATE;
 
 static char 
 switch_update_interrupt_sense()
@@ -25,33 +25,29 @@ switch_init()			/* setup switch */
   P2OUT |= SWITCHES;		/* pull-ups for switches */
   P2DIR &= ~SWITCHES;		/* set switches' bits for input */
   switch_update_interrupt_sense();
-  //led_update();
   switch_interrupt_handler();
 }
 
 void
 switch_interrupt_handler()
 {
-  char hold = 0;
   char p2val = switch_update_interrupt_sense();
-  //switch_state_down = (p1val & SW1) ? 0 : 1; /* 0 when SW1 is up */
-  //switch_state_changed = 1;
-  //led_update();
-  sw_one = (p2val & SW1) ? 0 : 1;
-  sw_two = (p2val & SW2) ? 0 : 1;
-  sw_thr = (p2val & SW3) ? 0 : 1;
-  sw_fou = (p2val & SW4) ? 0 : 1;
+
+  sw_1 = (p2val & SW1) ? 0 : 1;
+  sw_2 = (p2val & SW2) ? 0 : 1;
+  sw_3 = (p2val & SW3) ? 0 : 1;
+  sw_4 = (p2val & SW4) ? 0 : 1;
   switch_state_changed = 1;
-  if (sw_one) {
+  if (sw_1) {
     stateMachine(1);
   }
-  else if (sw_two) {
+  else if (sw_2) {
     stateMachine(2);
   }
-  else if (sw_thr) {
+  else if (sw_3) {
     stateMachine(3);
   }
-  else if (sw_fou) {
+  else if (sw_4) {
     stateMachine(4);
   }
 }
